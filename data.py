@@ -28,8 +28,7 @@ def get_data_loaders(batch_size=4):
 
 def get_path():
     '''创建存储数据的文件夹并返回路径'''
-    #适应不同用户名，在Documents文件夹里创建tranining_data文件夹
-    data_folder = Path.home()/'Documents'/'training_data'
+    data_folder = Path.home()/'Documents'/'training_data' # 适应不同用户名，在Documents文件夹里创建tranining_data文件夹
     data_folder.mkdir(parents=True, exist_ok=True)
     str_path = str(data_folder)
 

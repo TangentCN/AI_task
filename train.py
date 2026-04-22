@@ -5,7 +5,7 @@ from model import Net
 from data import get_data_loaders, get_path
 from config import Config
 
-def train(trainloader, net, num_epochs, criterion, optimizer, save_path):
+def train():
     cfg = Config()
     net = Net()
     num_epochs = cfg.epochs
@@ -42,3 +42,6 @@ def train(trainloader, net, num_epochs, criterion, optimizer, save_path):
         torch.save(net.state_dict(), f"{save_path}/epoch_{epoch + 1}_model.pth")
         
     print('Finished Training')
+
+if __name__ == '__main__':
+    train()
