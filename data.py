@@ -3,23 +3,26 @@ import torchvision
 import torchvision.transforms as transforms
 from torchvision.transforms import ToPILImage
 from pathlib import Path
+from config import Config
 show = ToPILImage()
 
 def get_data_loaders(batch_size=4):
     '''数据导入与处理'''
+    cfg = Config()
+    dataset_path = cfg.dataset_path
     # 定义数据预处理流程
     transform = transforms.Compose(
         [transforms.ToTensor(),
         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
         ])
     # 加载CIFAR-10训练集
-    trainset = torchvision.datasets.CIFAR10(root='./dataset', train=True,
+    trainset = torchvision.datasets.CIFAR10(root=dataset_path, train=True,
                                             download=True, transform=transform)
     # 创建训练数据加载器
     trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size,
                                             shuffle=True, num_workers=2)
     #加载CIFAR-10测试集
-    testset = torchvision.datasets.CIFAR10(root='./dataset', train=False,
+    testset = torchvision.datasets.CIFAR10(root=dataset_path, train=False,
                                         download=True, transform=transform)
     # 创建测试数据加载器
     testloader = torch.utils.data.DataLoader(testset, batch_size=batch_size,
