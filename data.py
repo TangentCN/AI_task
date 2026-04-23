@@ -6,10 +6,12 @@ from pathlib import Path
 from config import Config
 show = ToPILImage()
 
-def get_data_loaders(batch_size=4):
+def get_data_loaders():
     '''数据导入与处理'''
+    # 从Config类获取必要参数（不使用函数本身入口）
     cfg = Config()
     dataset_path = cfg.dataset_path
+    batch_size = cfg.batch_size
     # 定义数据预处理流程
     transform = transforms.Compose(
         [transforms.ToTensor(),
