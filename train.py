@@ -16,9 +16,9 @@ def draw(losses):
     fig, ax = plt.subplots()                    # 初始化界面fig与图表ax
     ax.plot(inputs, losses, linewidth = 3)      # 指定输入输出，粗细
 
-    ax.set_title('Square Numbers', fontsize=24) # 标题
-    ax.set_xlabel('Num', fontsize=14)           # x标题
-    ax.set_ylabel('Num squared', fontsize=14)   # y标题
+    ax.set_title('Loss in Training Process', fontsize=24) # 标题
+    ax.set_xlabel('Time / (1000 batches)', fontsize=14)           # x标题
+    ax.set_ylabel('Loss', fontsize=14)   # y标题
     ax.tick_params(axis='both', labelsize=14)   # 刻度
 
     plt.show()
