@@ -61,7 +61,7 @@ def train():
                     avrg_loss = running_loss / 1000
                     losses.append(avrg_loss)
                     print('epoch %d: batch %5d loss: %.3f' \
-                        % (epoch+1, i+1, avrg_loss))
+                        % (epoch+1, i, avrg_loss))
                     running_loss = 0.0
                 
         torch.save(net.state_dict(), f"{save_path}/epoch_{epoch + 1}_model.pth")
