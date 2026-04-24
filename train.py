@@ -29,7 +29,7 @@ def train():
     net = Net()
     save_path = get_path()
     criterion = nn.CrossEntropyLoss()                                                    # 交叉熵损失函数
-    optimizer = optim.SGD(net.parameters(), lr=cfg.learning_rate, momentum=cfg.momentum) # 使用SGD（随机梯度下降）优化
+    optimizer = optim.SGD(net.parameters(), lr=cfg.learning_rate, momentum=cfg.momentum, weight_decay=cfg.weight_decay) # 使用SGD（随机梯度下降）优化
     trainloader, _ = get_data_loaders(cfg.batch_size)
     losses = []
 
