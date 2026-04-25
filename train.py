@@ -22,17 +22,21 @@ def draw(losses):
     ax.set_ylabel('Loss', fontsize=14)                      # y标题
     ax.tick_params(axis='both', labelsize=14)               # 刻度
 
-    plt.show()
     plt.savefig(save_path)
+    plt.show()
 
 def train():
     '''训练主程序'''
     cfg = Config()
-    net = Net()
+
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    net = Net().to(device)  # 有GPU就用GPU
+
     save_path = get_path()
     criterion = nn.CrossEntropyLoss()                                                    # 交叉熵损失函数
     optimizer = optim.SGD(net.parameters(), lr=cfg.learning_rate, momentum=cfg.momentum) # 使用SGD（随机梯度下降）优化
-    trainloader, _ = get_data_loaders(cfg.batch_size)
+    trainloader, _ = get_data_loaders()
+    
     losses = []
 
     for epoch in range(cfg.epochs):     
