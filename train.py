@@ -1,4 +1,5 @@
 import torch
+import datetime
 import torch.nn as nn
 import matplotlib.pyplot as plt
 from torch import optim
@@ -24,6 +25,42 @@ def draw(losses):
 
     plt.savefig(save_path)
     plt.show()
+
+def save_training_log(losses):
+    '''保存训练日志到文本文件'''
+    cfg = Config()
+    save_path = get_path()
+    log_path = f"{save_path}/training_log.txt"
+    
+    with open(log_path, 'w', encoding='utf-8') as f:
+        f.write("=" * 50 + "\n")
+        f.write("训练日志\n")
+        f.write(f"训练时间: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+        f.write("=" * 50 + "\n\n")
+        
+        f.write("配置参数:\n")
+        f.write(f"{'=' * 30}\n")
+        f.write(f"批次大小 (batch_size): {cfg.batch_size}\n")
+        f.write(f"训练轮数 (epochs): {cfg.epochs}\n")
+        f.write(f"学习率 (learning_rate): {cfg.learning_rate}\n")
+        f.write(f"动量 (momentum): {cfg.momentum}\n")
+        f.write(f"数据集路径: {cfg.dataset_path}\n")
+        
+        f.write("训练结果:\n")
+        f.write(f"{'=' * 30}\n")
+        f.write(f"训练总批次: {len(losses)}\n")
+        final_loss = losses[-1] if losses else 'N/A'
+        f.write(f"最终损失值: {final_loss:.4f}\n")
+        min_loss = min(losses) if losses else 'N/A'
+        f.write(f"最小损失值: {min_loss:.4f}\n" if isinstance(min_loss, float) else f"最小损失值: {min_loss}\n")
+        
+        if losses:
+            f.write(f"\n损失值记录:\n")
+            f.write(f"{'=' * 30}\n")
+            for i, loss in enumerate(losses, 1):
+                f.write(f"第{i:3d}次记录: {loss:.4f}\n")
+    
+    print(f"训练日志已保存至: {log_path}")
 
 def train():
     '''训练主程序'''
@@ -77,6 +114,7 @@ def train():
         torch.save(net.state_dict(), f"{save_path}/epoch_{epoch + 1}_model.pth")
       
     print('Finished Training')
+    save_training_log(losses)
     draw(losses)
 
 if __name__ == '__main__':
