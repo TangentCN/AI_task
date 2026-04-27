@@ -108,13 +108,13 @@ def save_test_log(log_dict):
     weighted_f1 = log_dict['f1_score']
 
     with open(log_path, 'w', encoding='utf-8') as f:
-        f.write('='*50)
-        f.write('测试集评估结果:')
-        f.write('='*50)
-        f.write(f'准确率 (Accuracy):    {accuracy:.4f} ({100*accuracy:.2f}%)')
-        f.write(f'精确率 (Precision):   {weighted_precision:.4f}')
-        f.write(f'召回率 (Recall):      {weighted_recall:.4f}')
-        f.write(f'F1分数 (F1-Score):    {weighted_f1:.4f}')
+        f.write('='*50 + '\n')
+        f.write('测试集评估结果:\n')
+        f.write('='*50 + '\n')
+        f.write(f'准确率 (Accuracy):    {accuracy:.4f} ({100*accuracy:.2f}%)\n')
+        f.write(f'精确率 (Precision):   {weighted_precision:.4f}\n')
+        f.write(f'召回率 (Recall):      {weighted_recall:.4f}\n')
+        f.write(f'F1分数 (F1-Score):    {weighted_f1:.4f}\n')
         f.write('='*50)
 
     print(f"测试日志已保存至{log_path}")
