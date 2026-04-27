@@ -100,6 +100,7 @@ def load_model(weight_path, device='cpu'):
     return net
 
 def save_test_log(log_dict):
+    '''保存测试日志'''
     log_path = f"{get_path()}/test_log.txt"
     accuracy = log_dict['accuracy']
     weighted_precision = log_dict['precision']
@@ -131,7 +132,8 @@ def run_test():
     # 4.模型初始化
     net = load_model(weight_path, device)
     # 5.正式测试，输出结果
-    predict(test_loader, net, device)
+    save_test_log(predict(test_loader, net, device))
+    print('Finished testing!')
 
 if __name__=='__main__':
     run_test()
