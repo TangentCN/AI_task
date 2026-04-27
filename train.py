@@ -18,7 +18,7 @@ def draw(losses):
     fig, ax = plt.subplots()                    # 初始化界面fig与图表ax
     ax.plot(inputs, losses, linewidth = 3)      # 指定输入输出，粗细
     ax.set_title('Loss in Training Process', fontsize=24)   # 标题
-    ax.set_xlabel('Time / (1000 batches)', fontsize=14)     # x标题
+    ax.set_xlabel('Time / (50 batches)', fontsize=14)     # x标题
     ax.set_ylabel('Loss', fontsize=14)                      # y标题
     ax.tick_params(axis='both', labelsize=14)               # 刻度
 
@@ -67,7 +67,7 @@ def train():
                     avrg_loss = running_loss / 50
                     losses.append(avrg_loss)
                     print('epoch %d: batch %5d loss: %.3f' \
-                        % (epoch+1, i+1, avrg_loss))
+                        % (epoch+1, i, avrg_loss))
                     running_loss = 0.0
                 
         torch.save(net.state_dict(), f"{save_path}/epoch_{epoch + 1}_model.pth")
