@@ -64,7 +64,7 @@ def train():
 
             # 下面的这段代码对于训练无实际作用，仅用于观察训练状态
             running_loss += loss.item()
-            if i % 50 == 0:           # 每1000个batch记录一下训练状态
+            if i % 50 == 0:           # 每50个batch记录一下训练状态
                 if i == 0:
                     pass
                 else:
