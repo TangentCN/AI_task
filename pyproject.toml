@@ -11,10 +11,6 @@ dependencies = [
     "matplotlib>=3.7.0",
 ]
 
-[[tool.uv.sources]]
-package = "torch"
-index = "https://mirrors.aliyun.com/pytorch-wheels/cu128"
-
-[[tool.uv.sources]]
-package = "torchvision"
-index = "https://mirrors.aliyun.com/pytorch-wheels/cu128"
+[tool.uv.sources]
+torch = { index = "https://mirrors.aliyun.com/pytorch-wheels/cu128" }
+torchvision = { index = "https://mirrors.aliyun.com/pytorch-wheels/cu128" }
