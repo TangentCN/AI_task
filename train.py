@@ -45,7 +45,7 @@ def train():
         for i, data in enumerate(trainloader, 0):
     
             # 1. 取出数据
-            inputs, labels = data
+            inputs, labels = data[0].to(device), data[1].to(device)
     
             # 梯度清零
             optimizer.zero_grad()
