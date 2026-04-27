@@ -60,11 +60,11 @@ def train():
 
             # 下面的这段代码对于训练无实际作用，仅用于观察训练状态
             running_loss += loss.item()
-            if i % 1000 == 0:           # 每1000个batch记录一下训练状态
+            if i % 50 == 0:           # 每1000个batch记录一下训练状态
                 if i == 0:
                     pass
                 else:
-                    avrg_loss = running_loss / 1000
+                    avrg_loss = running_loss / 50
                     losses.append(avrg_loss)
                     print('epoch %d: batch %5d loss: %.3f' \
                         % (epoch+1, i+1, avrg_loss))
