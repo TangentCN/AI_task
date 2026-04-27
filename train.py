@@ -30,6 +30,10 @@ def train():
     cfg = Config()
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    if torch.cuda.is_available():
+        print('device: on gpu')
+    else:
+        print('device: on cpu')
     net = Net().to(device)  # 有GPU就用GPU
 
     save_path = get_path()
