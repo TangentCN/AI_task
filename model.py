@@ -3,10 +3,10 @@ import torch.nn.functional as F
 from config import Config
 
 '''模型构建'''
-class Net(nn.Module):
+class Dropout_Net(nn.Module):
     def __init__(self):
         # nn.Module子类的函数必须在构造函数中执行父类的构造函数
-        super(Net, self).__init__()
+        super(Dropout_Net, self).__init__()
         cfg = Config()
         # 卷积层 '3'表示输入图片为单通道, '6'表示输出通道数，'5'表示卷积核为5*5
         self.conv1 = nn.Conv2d(3, 6, 5) 

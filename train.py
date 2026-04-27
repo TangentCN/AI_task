@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import matplotlib.pyplot as plt
 from torch import optim
-from model import Net
+from model import Dropout_Net
 from data import get_data_loaders, get_path
 from config import Config
 
@@ -32,7 +32,7 @@ def train():
     save_path = get_path()
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-    net = Net().to(device)
+    net = Dropout_Net().to(device)
     criterion = nn.CrossEntropyLoss() # 交叉熵损失函数
     optimizer = optim.SGD(net.parameters(), lr=cfg.learning_rate, momentum=cfg.momentum, weight_decay=cfg.weight_decay) # 使用SGD（随机梯度下降）优化
     trainloader, _ = get_data_loaders()
