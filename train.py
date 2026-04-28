@@ -142,7 +142,7 @@ def train():
         # 学习率动态衰减：监控准确度 (mode='max')
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
         optimizer,
-        mode='max',              # 监控准确度，越小越好
+        mode='max',              # 监控准确度，越大越好
         factor=cfg.factor,       # 学习率 * n
         patience=cfg.patience,   # n个epoch无改善后衰减
         threshold=cfg.threshold, # 判定是否改善的阈值
@@ -186,8 +186,8 @@ def train():
         val_accuracies.append(accuracy)
         current_lr = optimizer.param_groups[0]['lr']
         learning_rates.append(current_lr)
-        print('epoch %d: loss: %.3f, val_accuracy: %.3f%%' % 
-              (epoch+1, avrg_loss, accuracy * 100))
+        print('epoch %d: loss: %.3f lr: %.5f val_accuracy: %.3f%%' % 
+              (epoch+1, avrg_loss, current_lr, accuracy * 100))
         
         # 保存测试集上准确率最高的模型
         if accuracy > best_accuracy:
@@ -195,7 +195,7 @@ def train():
             best_epoch = epoch
             torch.save(net.state_dict(), f"{save_path}/best_model.pth")
             print(f"   -> 新的最佳模型，测试准确率: {accuracy:.3%}")
-        # 每个epoch结束后更新学习率调度器，传入当前平均损失
+        # 每个epoch结束后更新学习率调度器，传入当前准确度
         scheduler.step(accuracy)
     # 结束处理  
     print('Finished Training')
