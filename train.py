@@ -47,6 +47,7 @@ def save_training_log(net, losses, val_accuracies, best_epoch, best_accuracy):
         f.write(f"动量 (momentum): {cfg.momentum}\n")
         if net.name == 'Dropout_LeNet':
             f.write(f"权重衰减 (weight_decay): {cfg.weight_decay}\n")
+            f.write(f"随机丢弃概率 (dropout_rate): {cfg.dropout_rate}\n")
         f.write(f"数据集路径: {cfg.dataset_path}\n")
         
         f.write("\n训练结果:\n")
