@@ -39,7 +39,7 @@ def draw(losses, name):
 
     plt.savefig(save_path)
 
-def save_training_log(net, losses, val_accuracies, best_epoch, best_accuracy):
+def save_training_log(net, losses, val_accuracies,learning_rates, best_epoch, best_accuracy):
     '''保存训练日志到文本文件'''
     cfg = Config()
     save_path = get_path()
@@ -91,6 +91,12 @@ def save_training_log(net, losses, val_accuracies, best_epoch, best_accuracy):
             f.write(f"{'=' * 30}\n")
             for i, loss in enumerate(losses, 1):
                 f.write(f"第{i:3d}次记录: {loss:.4f}\n")
+
+        if learning_rates:
+            f.write(f"\nLR记录:\n")
+            f.write(f"{'=' * 30}\n")
+            for i, lr in enumerate(learning_rates, 1):
+                f.write(f"第{i:3d}次记录: {lr:.4f}\n")
     
     print(f"训练日志已保存至: {log_path}")
 
@@ -121,13 +127,31 @@ def train():
     else:
         print('device: on cpu')
     net = get_model(cfg.model_name).to(device)  # 有GPU就用GPU
+
     # 初始化各项变量
     save_path = get_path()
-    criterion = nn.CrossEntropyLoss() # 交叉熵损失函数
-    optimizer = optim.SGD(net.parameters(), lr=cfg.learning_rate, momentum=cfg.momentum, weight_decay=cfg.weight_decay) # 使用SGD（随机梯度下降）优化
+        # 交叉熵损失函数
+    criterion = nn.CrossEntropyLoss()
+        # 使用SGD（随机梯度下降）优化
+    optimizer = optim.SGD(
+        net.parameters(),
+        lr=cfg.learning_rate,
+        momentum=cfg.momentum,
+        weight_decay=cfg.weight_decay
+        )
+        # 学习率动态衰减：监控准确度 (mode='max')
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
+        optimizer,
+        mode='max',              # 监控准确度，越小越好
+        factor=cfg.factor,       # 学习率 * n
+        patience=cfg.patience,   # n个epoch无改善后衰减
+        threshold=cfg.threshold, # 判定是否改善的阈值
+        verbose=True             # 打印衰减信息
+    )
     trainloader, valloader, _ = get_data_loaders()
     losses = []
-    val_accuracies = []  
+    val_accuracies = []
+    learning_rates = []
     best_accuracy = 0.0
     best_epoch = -1
     winsound.Beep(1000,500) # 准备好了你就响一声
@@ -160,6 +184,8 @@ def train():
         losses.append(avrg_loss)
         accuracy = evaluate_model(net, valloader, device)
         val_accuracies.append(accuracy)
+        current_lr = optimizer.param_groups[0]['lr']
+        learning_rates.append(current_lr)
         print('epoch %d: loss: %.3f, val_accuracy: %.3f%%' % 
               (epoch+1, avrg_loss, accuracy * 100))
         
@@ -169,12 +195,15 @@ def train():
             best_epoch = epoch
             torch.save(net.state_dict(), f"{save_path}/best_model.pth")
             print(f"   -> 新的最佳模型，测试准确率: {accuracy:.3%}")
+        # 每个epoch结束后更新学习率调度器，传入当前平均损失
+        scheduler.step(accuracy)
     # 结束处理  
     print('Finished Training')
     winsound.Beep(1000,500) # 结束了就响一声
     save_training_log(net, losses, val_accuracies, best_epoch, best_accuracy)
     draw(losses, 'loss')
     draw(val_accuracies, 'accuracies')
+    draw(learning_rates, 'learing_rate')
     run_test() #顺便运行测试
 
 if __name__ == '__main__':

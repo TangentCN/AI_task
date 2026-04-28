@@ -2,11 +2,16 @@ class Config:
     model_name = 'AlexNet_CIFAR10'
     batch_size = 128
     epochs = 100
+    dataset_path = 'D:/CIFAR_dataset'
+
     learning_rate = 0.01
     momentum = 0.9
-    dataset_path = 'D:/CIFAR_dataset'
+    weight_decay = 0.001
     dropout_rate = 0.5
-    weight_decay = 0.0005
+
+    factor = 0.5
+    patience = 10
+    threshold = 1e-4
 
 '''
 model_names:
