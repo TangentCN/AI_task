@@ -1,5 +1,5 @@
 class Config:
-    batch_size = 256
+    batch_size = 128
     epochs = 5
     learning_rate = 0.01
     momentum = 0.9
