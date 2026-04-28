@@ -7,3 +7,10 @@ class Config:
     dataset_path = 'D:/CIFAR_dataset'
     dropout_rate = 0.6
     weight_decay = 0.0005
+
+'''
+model_names:
+    'LeNet'
+    'Dropout_LeNet'
+    'AlexNet_CIFAR10'
+'''
