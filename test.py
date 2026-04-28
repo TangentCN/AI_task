@@ -74,12 +74,12 @@ def predict(testloader, net, device='cpu'):
     weighted_f1 = torch.tensor(f1_list).dot(weights).item()
     
     # 报告性能指标
-    print("性能指标:\n")
-    print(f"{'=' * 30}\n")
-    print(f"Accuracy: {accuracy:.4f}\n")
-    print(f"Precision: {weighted_precision:.4f}\n")
-    print(f"Recall: {weighted_recall:.4f}\n")
-    print(f"F1: {weighted_f1:.4f}\n\n")
+    print("性能指标:")
+    print(f"{'=' * 30}")
+    print(f"Accuracy: {accuracy:.4f}")
+    print(f"Precision: {weighted_precision:.4f}")
+    print(f"Recall: {weighted_recall:.4f}")
+    print(f"F1: {weighted_f1:.4f}\n")
     # 返回性能指标
     return {
         'accuracy': accuracy,
