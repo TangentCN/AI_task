@@ -3,7 +3,7 @@ import datetime
 import winsound
 import torch.nn as nn
 import matplotlib.pyplot as plt
-from model import LeNet, Dropout_LeNet
+from model import LeNet, Dropout_LeNet, AlexNet_CIFAR10
 from torch import optim
 from data import get_data_loaders, get_path
 from test import run_test
@@ -16,6 +16,8 @@ def get_model(name):
             model = LeNet() 
         case 'Dropout_LeNet':
             model = Dropout_LeNet()
+        case 'AlexNet_CIFAR10':
+            model = AlexNet_CIFAR10()
 
     return model
 
