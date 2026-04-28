@@ -19,7 +19,7 @@ def draw(losses):
     fig, ax = plt.subplots()                    # 初始化界面fig与图表ax
     ax.plot(inputs, losses, linewidth = 3)      # 指定输入输出，粗细
     ax.set_title('Loss in the Training Process', fontsize=24)   # 标题
-    ax.set_xlabel('Time / (50 batches)', fontsize=14)     # x标题
+    ax.set_xlabel('Time / (10 batches)', fontsize=14)     # x标题
     ax.set_ylabel('Loss', fontsize=14)                      # y标题
     ax.tick_params(axis='both', labelsize=14)               # 刻度
 
@@ -101,11 +101,11 @@ def train():
 
             # 下面的这段代码对于训练无实际作用，仅用于观察训练状态
             running_loss += loss.item()
-            if i % 50 == 0:           # 每50个batch记录一下训练状态
+            if i % 10 == 0:           # 每10个batch记录一下训练状态
                 if i == 0:
                     pass
                 else:
-                    avrg_loss = running_loss / 50
+                    avrg_loss = running_loss / 10
                     losses.append(avrg_loss)
                     print('epoch %d: batch %5d loss: %.3f' \
                         % (epoch+1, i, avrg_loss))
