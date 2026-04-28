@@ -1,6 +1,7 @@
 import torch
 from data import get_data_loaders, get_path
 from config import Config
+from model import LeNet, Dropout_LeNet
 
 def predict(testloader, net, device='cpu'):
     '''在测试集上评估模型'''
@@ -86,9 +87,19 @@ def predict(testloader, net, device='cpu'):
         'true_labels': y_true.numpy()
     }
 
+def get_model(name):
+    '''根据config提供的信息选择模型'''
+    match name:
+        case 'LeNet':
+            model = LeNet() 
+        case 'Dropout_LeNet':
+            model = Dropout_LeNet()
+
+    return model
+
 def load_model(cfg, weight_path, device='cpu'):
     '''加载训练好的模型'''
-    net = cfg.model
+    net = get_model(cfg.model_name)
     # 加载权重参数（需要路径）
     net.load_state_dict(torch.load(weight_path, map_location=device))
     # 选择设备

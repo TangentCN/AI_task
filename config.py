@@ -1,7 +1,5 @@
-from model import LeNet, Dropout_LeNet
-
 class Config:
-    model = Dropout_LeNet()
+    model_name = 'Dropout_LeNet'
     batch_size = 128
     epochs = 50
     learning_rate = 0.0075

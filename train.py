@@ -3,10 +3,21 @@ import datetime
 import winsound
 import torch.nn as nn
 import matplotlib.pyplot as plt
+from model import LeNet, Dropout_LeNet
 from torch import optim
 from data import get_data_loaders, get_path
 from test import run_test
 from config import Config
+
+def get_model(name):
+    '''根据config提供的信息选择模型'''
+    match name:
+        case 'LeNet':
+            model = LeNet() 
+        case 'Dropout_LeNet':
+            model = Dropout_LeNet()
+
+    return model
 
 def draw(losses, name):
     '''画图模块'''
@@ -107,7 +118,7 @@ def train():
         print('device: on gpu')
     else:
         print('device: on cpu')
-    net = cfg.model.to(device)  # 有GPU就用GPU
+    net = get_model(cfg.model_name).to(device)  # 有GPU就用GPU
 
     save_path = get_path()
     criterion = nn.CrossEntropyLoss()                                                    # 交叉熵损失函数
