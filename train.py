@@ -114,26 +114,24 @@ def evaluate_model(net, dataloader, device):
 def train():
     '''训练主程序'''
     cfg = Config()
-
+    # 解决设备调用问题
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     if torch.cuda.is_available():
         print('device: on gpu')
     else:
         print('device: on cpu')
     net = get_model(cfg.model_name).to(device)  # 有GPU就用GPU
-
+    # 初始化各项变量
     save_path = get_path()
-    criterion = nn.CrossEntropyLoss()                                                    # 交叉熵损失函数
+    criterion = nn.CrossEntropyLoss() # 交叉熵损失函数
     optimizer = optim.SGD(net.parameters(), lr=cfg.learning_rate, momentum=cfg.momentum, weight_decay=cfg.weight_decay) # 使用SGD（随机梯度下降）优化
     trainloader, valloader, _ = get_data_loaders()
-    
     losses = []
-    val_accuracies = []  # 记录测试集（验证集）准确率
+    val_accuracies = []  
     best_accuracy = 0.0
     best_epoch = -1
-
-    winsound.Beep(1000,500)
-
+    winsound.Beep(1000,500) # 准备好了你就响一声
+    # 训练主循环(以epoch为单位)
     for epoch in range(cfg.epochs):     
         running_loss = 0.0
         num_batches = 0
@@ -157,12 +155,11 @@ def train():
             # 下面的这段代码对于训练无实际作用，仅用于观察训练状态
             running_loss += loss.item()
             num_batches += 1
-
+        # 计算本epoch的各项统计数据并存储，报告状态
         avrg_loss = running_loss / num_batches
         losses.append(avrg_loss)
         accuracy = evaluate_model(net, valloader, device)
         val_accuracies.append(accuracy)
-        
         print('epoch %d: loss: %.3f, val_accuracy: %.3f%%' % 
               (epoch+1, avrg_loss, accuracy * 100))
         
@@ -172,13 +169,13 @@ def train():
             best_epoch = epoch
             torch.save(net.state_dict(), f"{save_path}/best_model.pth")
             print(f"   -> 新的最佳模型，测试准确率: {accuracy:.3%}")
-      
+    # 结束处理  
     print('Finished Training')
-    winsound.Beep(1000,500)
+    winsound.Beep(1000,500) # 结束了就响一声
     save_training_log(net, losses, val_accuracies, best_epoch, best_accuracy)
     draw(losses, 'loss')
     draw(val_accuracies, 'accuracies')
-    run_test()
+    run_test() #顺便运行测试
 
 if __name__ == '__main__':
     train()
