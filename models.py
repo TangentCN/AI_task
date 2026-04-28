@@ -78,11 +78,11 @@ class AlexNet_CIFAR10(nn.Module):
         self.name = 'AlexNet_CIFAR10'
         # 卷积层 (入通道数，出通道数，核大小，步长，*填充)(适配32x32输入，换了小核小步长)
         self.conv1 = nn.Conv2d(3, 64, 3, 1, 1)
-        self.conv2 = nn.Conv2d(64, 192, 3, 1)
+        self.conv2 = nn.Conv2d(64, 192, 3, 1, 1)
             # 前两个各自池化激活，后三个三连
-        self.conv3 = nn.Conv2d(192, 384, 3, 1)
-        self.conv4 = nn.Conv2d(384, 256, 3, 1)
-        self.conv5 = nn.Conv2d(256, 256, 3, 1)
+        self.conv3 = nn.Conv2d(192, 384, 3, 1, 1)
+        self.conv4 = nn.Conv2d(384, 256, 3, 1, 1)
+        self.conv5 = nn.Conv2d(256, 256, 3, 1, 1)
         # 池化层(核大小，步长)(还是单独列出来比较好)
         self.pool = nn.MaxPool2d(2, 2)
         # 全连接层 (输入特征数，输出特征数)(32->16->8->4)

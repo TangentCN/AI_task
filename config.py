@@ -1,11 +1,11 @@
 class Config:
-    model_name = 'Dropout_LeNet'
+    model_name = 'AlexNet_CIFAR10'
     batch_size = 128
-    epochs = 50
-    learning_rate = 0.0075
-    momentum = 0.95
+    epochs = 100
+    learning_rate = 0.01
+    momentum = 0.9
     dataset_path = 'D:/CIFAR_dataset'
-    dropout_rate = 0.6
+    dropout_rate = 0.5
     weight_decay = 0.0005
 
 '''
