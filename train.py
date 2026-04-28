@@ -3,7 +3,7 @@ import datetime
 import torch.nn as nn
 import matplotlib.pyplot as plt
 from torch import optim
-from model import Net
+from model import LeNet, Dropout_LeNet
 from data import get_data_loaders, get_path
 from test import run_test
 from config import Config
@@ -26,7 +26,7 @@ def draw(losses, name):
 
     plt.savefig(save_path)
 
-def save_training_log(losses, val_accuracies, best_epoch, best_accuracy):
+def save_training_log(net, losses, val_accuracies, best_epoch, best_accuracy):
     '''保存训练日志到文本文件'''
     cfg = Config()
     save_path = get_path()
@@ -40,10 +40,13 @@ def save_training_log(losses, val_accuracies, best_epoch, best_accuracy):
         
         f.write("配置参数:\n")
         f.write(f"{'=' * 30}\n")
+        f.write(f"模型 : {net.name}\n")
         f.write(f"批次大小 (batch_size): {cfg.batch_size}\n")
         f.write(f"训练轮数 (epochs): {cfg.epochs}\n")
         f.write(f"学习率 (learning_rate): {cfg.learning_rate}\n")
         f.write(f"动量 (momentum): {cfg.momentum}\n")
+        if net.name == 'Dropout_LeNet':
+            f.write(f"权重衰减 (weight_decay): {cfg.weight_decay}\n")
         f.write(f"数据集路径: {cfg.dataset_path}\n")
         
         f.write("\n训练结果:\n")
@@ -103,11 +106,11 @@ def train():
         print('device: on gpu')
     else:
         print('device: on cpu')
-    net = Net().to(device)  # 有GPU就用GPU
+    net = LeNet().to(device)  # 有GPU就用GPU
 
     save_path = get_path()
     criterion = nn.CrossEntropyLoss()                                                    # 交叉熵损失函数
-    optimizer = optim.SGD(net.parameters(), lr=cfg.learning_rate, momentum=cfg.momentum) # 使用SGD（随机梯度下降）优化
+    optimizer = optim.SGD(net.parameters(), lr=cfg.learning_rate, momentum=cfg.momentum, weight_decay=cfg.weight_decay) # 使用SGD（随机梯度下降）优化
     trainloader, valloader, _ = get_data_loaders()
     
     losses = []
@@ -155,7 +158,7 @@ def train():
             print(f"   -> 新的最佳模型，测试准确率: {accuracy:.3%}")
       
     print('Finished Training')
-    save_training_log(losses, val_accuracies, best_epoch, best_accuracy)
+    save_training_log(net, losses, val_accuracies, best_epoch, best_accuracy)
     draw(losses, 'loss')
     draw(val_accuracies, 'accuracies')
     run_test()
