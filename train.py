@@ -159,6 +159,7 @@ def train():
             print(f"   -> 新的最佳模型，测试准确率: {accuracy:.3%}")
       
     print('Finished Training')
+    print("\a")
     save_training_log(net, losses, val_accuracies, best_epoch, best_accuracy)
     draw(losses, 'loss')
     draw(val_accuracies, 'accuracies')
