@@ -3,6 +3,8 @@ import torchvision
 import torchvision.transforms as transforms
 from torch.utils.data import random_split
 from config import Config
+from pathlib import Path
+
 def get_data_loaders():
     '''数据导入与处理：返回训练集、验证集和测试集'''
     cfg = Config()
@@ -34,3 +36,11 @@ def get_data_loaders():
     testloader = torch.utils.data.DataLoader(testset, batch_size=batch_size,
                                              shuffle=False, num_workers=0)
     return trainloader, valloader, testloader
+
+def get_path():
+    '''创建存储数据的文件夹并返回路径'''
+    data_folder = Path.home()/'Documents'/'training_data' # 适应不同用户名，在Documents文件夹里创建tranining_data文件夹
+    data_folder.mkdir(parents=True, exist_ok=True)
+    str_path = str(data_folder)
+
+    return str_path
