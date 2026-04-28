@@ -125,7 +125,7 @@ def run_test():
     # 1.获取设备信息：有独显优先，没有就用CPU
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     # 2.获取测试集
-    _, test_loader = get_data_loaders()
+    _, _, test_loader = get_data_loaders()
     # 3.获取模型权重参数（用于模型初始化）
     epoch = cfg.epochs
     weight_path = f"{get_path()}/best_model.pth"

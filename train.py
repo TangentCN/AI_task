@@ -77,7 +77,7 @@ def save_training_log(losses, val_accuracies, best_epoch, best_accuracy):
     print(f"训练日志已保存至: {log_path}")
 
 def evaluate_model(net, dataloader, device):
-    '''在验证集/测试集上评估模型准确率'''
+    '''在验证集上评估模型准确率'''
     net.eval()
     correct = 0
     total = 0
@@ -107,7 +107,7 @@ def train():
     save_path = get_path()
     criterion = nn.CrossEntropyLoss()                                                    # 交叉熵损失函数
     optimizer = optim.SGD(net.parameters(), lr=cfg.learning_rate, momentum=cfg.momentum) # 使用SGD（随机梯度下降）优化
-    trainloader, testloader = get_data_loaders()
+    trainloader, valloader, _ = get_data_loaders()
     
     losses = []
     val_accuracies = []  # 记录测试集（验证集）准确率
@@ -140,7 +140,7 @@ def train():
 
         avrg_loss = running_loss / num_batches
         losses.append(avrg_loss)
-        accuracy = evaluate_model(net, testloader, device)
+        accuracy = evaluate_model(net, valloader, device)
         val_accuracies.append(accuracy)
         
         print('epoch %d: loss: %.3f, test accuracy: %.3f%%' % 
