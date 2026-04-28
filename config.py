@@ -5,4 +5,4 @@ class Config:
     momentum = 0.9
     dataset_path = 'D:/CIFAR_dataset'
     dropout_rate = 0.6
-    weight_decay = 0.0005
+    weight_decay = 0.00075
