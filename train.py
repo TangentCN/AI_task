@@ -200,7 +200,7 @@ def train():
     # 结束处理  
     print('Finished Training')
     winsound.Beep(1000,500) # 结束了就响一声
-    save_training_log(net, losses, val_accuracies, best_epoch, best_accuracy)
+    save_training_log(net, losses, val_accuracies, learning_rates, best_epoch, best_accuracy)
     draw(losses, 'loss')
     draw(val_accuracies, 'accuracies')
     draw(learning_rates, 'learing_rate')
