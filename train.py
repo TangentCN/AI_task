@@ -17,7 +17,7 @@ def draw(losses):
 
     plt.style.use('seaborn-v0_8-darkgrid')      # 使用样式
     fig, ax = plt.subplots()                    # 初始化界面fig与图表ax
-    ax.plot(inputs, losses, linewidth = 3)      # 指定输入输出，粗细
+    ax.plot(inputs, losses, linewidth = 1)      # 指定输入输出，粗细
     ax.set_title('Loss in the Training Process', fontsize=24)   # 标题
     ax.set_xlabel('Time / (10 batches)', fontsize=14)     # x标题
     ax.set_ylabel('Loss', fontsize=14)                      # y标题
