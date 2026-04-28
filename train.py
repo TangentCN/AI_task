@@ -106,7 +106,7 @@ def train():
         print('device: on gpu')
     else:
         print('device: on cpu')
-    net = LeNet().to(device)  # 有GPU就用GPU
+    net = Dropout_LeNet().to(device)  # 有GPU就用GPU
 
     save_path = get_path()
     criterion = nn.CrossEntropyLoss()                                                    # 交叉熵损失函数
