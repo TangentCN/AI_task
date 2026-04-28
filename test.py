@@ -1,6 +1,6 @@
 import torch
 from data import get_data_loaders, get_path
-from model import Net
+from model import LeNet, Dropout_LeNet
 from config import Config
 
 def predict(testloader, net, device='cpu'):
@@ -89,7 +89,7 @@ def predict(testloader, net, device='cpu'):
 
 def load_model(weight_path, device='cpu'):
     '''加载训练好的模型'''
-    net = Net()
+    net = Dropout_LeNet()
     # 加载权重参数（需要路径）
     net.load_state_dict(torch.load(weight_path, map_location=device))
     # 选择设备
