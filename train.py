@@ -143,7 +143,7 @@ def train():
         accuracy = evaluate_model(net, valloader, device)
         val_accuracies.append(accuracy)
         
-        print('epoch %d: loss: %.3f, test accuracy: %.3f%%' % 
+        print('epoch %d: loss: %.3f, val_accuracy: %.3f%%' % 
               (epoch+1, avrg_loss, accuracy * 100))
         
         # 保存测试集上准确率最高的模型
