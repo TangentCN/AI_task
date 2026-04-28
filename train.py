@@ -203,7 +203,7 @@ def train():
     save_training_log(net, losses, val_accuracies, learning_rates, best_epoch, best_accuracy)
     draw(losses, 'loss')
     draw(val_accuracies, 'accuracies')
-    draw(learning_rates, 'learing_rate')
+    draw(learning_rates, 'learning_rate')
     run_test() #顺便运行测试
 
 if __name__ == '__main__':
