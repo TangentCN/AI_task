@@ -1,7 +1,7 @@
 import torch
 from data import get_data_loaders, get_path
 from config import Config
-from model import LeNet, Dropout_LeNet, AlexNet_CIFAR10
+from models import LeNet, Dropout_LeNet, AlexNet_CIFAR10
 
 def predict(testloader, net, device='cpu'):
     '''在测试集上评估模型'''
