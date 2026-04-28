@@ -4,7 +4,6 @@ import winsound
 import torch.nn as nn
 import matplotlib.pyplot as plt
 from torch import optim
-from model import LeNet, Dropout_LeNet
 from data import get_data_loaders, get_path
 from test import run_test
 from config import Config
@@ -108,7 +107,7 @@ def train():
         print('device: on gpu')
     else:
         print('device: on cpu')
-    net = Dropout_LeNet().to(device)  # 有GPU就用GPU
+    net = cfg.model.to(device)  # 有GPU就用GPU
 
     save_path = get_path()
     criterion = nn.CrossEntropyLoss()                                                    # 交叉熵损失函数
@@ -121,7 +120,7 @@ def train():
     best_epoch = -1
 
     winsound.Beep(1000,500)
-    
+
     for epoch in range(cfg.epochs):     
         running_loss = 0.0
         num_batches = 0

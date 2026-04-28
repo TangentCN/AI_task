@@ -1,6 +1,5 @@
 import torch
 from data import get_data_loaders, get_path
-from model import LeNet, Dropout_LeNet
 from config import Config
 
 def predict(testloader, net, device='cpu'):
@@ -87,9 +86,9 @@ def predict(testloader, net, device='cpu'):
         'true_labels': y_true.numpy()
     }
 
-def load_model(weight_path, device='cpu'):
+def load_model(cfg, weight_path, device='cpu'):
     '''加载训练好的模型'''
-    net = Dropout_LeNet()
+    net = cfg.model
     # 加载权重参数（需要路径）
     net.load_state_dict(torch.load(weight_path, map_location=device))
     # 选择设备
@@ -130,7 +129,7 @@ def run_test():
     epoch = cfg.epochs
     weight_path = f"{get_path()}/best_model.pth"
     # 4.模型初始化
-    net = load_model(weight_path, device)
+    net = load_model(cfg, weight_path, device)
     # 5.正式测试，输出结果
     save_test_log(predict(test_loader, net, device))
     print('Finished testing!')
