@@ -120,6 +120,8 @@ def train():
     best_accuracy = 0.0
     best_epoch = -1
 
+    winsound.Beep(1000,500)
+    
     for epoch in range(cfg.epochs):     
         running_loss = 0.0
         num_batches = 0
