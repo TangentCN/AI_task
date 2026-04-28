@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from torch import optim
 from model import Net
 from data import get_data_loaders, get_path
+from test import run_test
 from config import Config
 
 def draw(losses, name):
@@ -157,6 +158,7 @@ def train():
     save_training_log(losses, val_accuracies, best_epoch, best_accuracy)
     draw(losses, 'loss')
     draw(val_accuracies, 'accuracies')
+    run_test()
 
 if __name__ == '__main__':
     train()
