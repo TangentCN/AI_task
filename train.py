@@ -113,7 +113,7 @@ def save_training_log(net, losses, val_accuracies,learning_rates, best_epoch, be
 def evaluate_model(net, dataloader, device):
     '''
     在验证集上评估模型准确率
-    
+
     该模块在升级到Dropout_LeNet时同步加入
     '''
     net.eval()
@@ -135,7 +135,7 @@ def train():
     '''
     训练主程序
 
-    LeNet 基本训练模块: 设备选择, 损失函数, SGD优化器, 损失记录, 绘图和日志记录
+    LeNet 基本训练模块: 训练主循环, 设备选择, 损失函数, SGD优化器, 损失记录, 绘图和日志记录
     Dropout_LeNet 更新: SGD优化器加入权重衰减系数, 加入验证集并只保存验证最优的模型
     AlexNet 更新: 加入学习率衰减控制器, 加入早停
     '''
