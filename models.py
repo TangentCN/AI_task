@@ -72,7 +72,7 @@ class Dropout_LeNet(nn.Module):
         return x
     
 class AlexNet_CIFAR10(nn.Module):
-    '''适配CIFAR-10 32*32小图片的AlexNet'''
+    '''适配CIFAR-10的AlexNet'''
     def __init__(self):
         super(AlexNet_CIFAR10, self).__init__()
         cfg = Config()
