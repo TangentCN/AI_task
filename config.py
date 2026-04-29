@@ -6,12 +6,14 @@ class Config:
 
     learning_rate = 0.01
     momentum = 0.9
-    weight_decay = 0.001
+    weight_decay = 1e-4
     dropout_rate = 0.5
 
     factor = 0.5
     patience = 10
     threshold = 1e-4
+
+    early_stopping_patience = 10
 
 '''
 model_names:

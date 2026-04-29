@@ -8,6 +8,7 @@ class LeNet(nn.Module):
         # nn.Module子类的函数必须在构造函数中执行父类的构造函数
         super(LeNet, self).__init__()
         self.name = 'LeNet'
+        self.regu = False
         # 卷积层 '3'表示输入图片为单通道, '6'表示输出通道数，'5'表示卷积核为5*5
         self.conv1 = nn.Conv2d(3, 6, 5) 
         # 卷积层
@@ -40,7 +41,7 @@ class Dropout_LeNet(nn.Module):
         super(Dropout_LeNet, self).__init__()
         cfg = Config()
         self.name = 'Dropout_LeNet'
-
+        self.regu = True
         # 卷积层 '3'表示输入图片为单通道, '6'表示输出通道数，'5'表示卷积核为5*5
         self.conv1 = nn.Conv2d(3, 6, 5) 
         # 卷积层
@@ -76,6 +77,7 @@ class AlexNet_CIFAR10(nn.Module):
         super(AlexNet_CIFAR10, self).__init__()
         cfg = Config()
         self.name = 'AlexNet_CIFAR10'
+        self.regu = True
         # 卷积层 (入通道数，出通道数，核大小，步长，*填充)(适配32x32输入，换了小核小步长)
         self.conv1 = nn.Conv2d(3, 64, 3, 1, 1)
         self.conv2 = nn.Conv2d(64, 192, 3, 1, 1)

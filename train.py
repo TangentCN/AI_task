@@ -55,10 +55,19 @@ def save_training_log(net, losses, val_accuracies,learning_rates, best_epoch, be
         f.write(f"{'=' * 30}\n")
         f.write(f"模型 : {net.name}\n")
         f.write(f"批次大小 (batch_size): {cfg.batch_size}\n")
-        f.write(f"训练轮数 (epochs): {cfg.epochs}\n")
+        f.write(f"早停耐心 (early_stopping_patience): {cfg.early_stopping_patience}\n")
+        f.write(f"训练轮数 (epochs): {len(losses)}")
+        if len(losses) < cfg.epochs:
+            f.write("(早停启用)\n")
+        else:
+            f.write("\n")
         f.write(f"学习率 (learning_rate): {cfg.learning_rate}\n")
+        f.write(f"学习率衰减相关参数:\n")
+        f.write(f"\tfactor: {cfg.factor}\n")
+        f.write(f"\tpatience: {cfg.patience}\n")
+        f.write(f"\tthreshold: {cfg.threshold}\n")
         f.write(f"动量 (momentum): {cfg.momentum}\n")
-        if net.name != 'LeNet':
+        if net.regu:
             f.write(f"权重衰减 (weight_decay): {cfg.weight_decay}\n")
             f.write(f"随机丢弃概率 (dropout_rate): {cfg.dropout_rate}\n")
         f.write(f"数据集路径: {cfg.dataset_path}\n")
@@ -146,7 +155,6 @@ def train():
         factor=cfg.factor,       # 学习率 * n
         patience=cfg.patience,   # n个epoch无改善后衰减
         threshold=cfg.threshold, # 判定是否改善的阈值
-        verbose=True             # 打印衰减信息
     )
     trainloader, valloader, _ = get_data_loaders()
     losses = []
@@ -154,6 +162,7 @@ def train():
     learning_rates = []
     best_accuracy = 0.0
     best_epoch = -1
+    counter = 0 # 早停监测器
     winsound.Beep(1000,500) # 准备好了你就响一声
     # 训练主循环(以epoch为单位)
     for epoch in range(cfg.epochs):     
@@ -190,11 +199,19 @@ def train():
               (epoch+1, avrg_loss, current_lr, accuracy * 100))
         
         # 保存测试集上准确率最高的模型
-        if accuracy > best_accuracy:
+        if accuracy >= best_accuracy:
             best_accuracy = accuracy
             best_epoch = epoch
+            counter = 0
             torch.save(net.state_dict(), f"{save_path}/best_model.pth")
             print(f"   -> 新的最佳模型，测试准确率: {accuracy:.3%}")
+        # 早停监测
+        else:
+            counter += 1
+            print(f"No improvement for {counter} epochs")
+            if counter >= cfg.early_stopping_patience:
+                print("Early stopping triggered!")
+                break
         # 每个epoch结束后更新学习率调度器，传入当前准确度
         scheduler.step(accuracy)
     # 结束处理  
