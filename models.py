@@ -135,7 +135,7 @@ class VGG11_CIFAR10(nn.Module):
         
         conv_arch = [(1, 64), (1, 128), (2, 256), (2, 512), (2, 512)] # 指定vgg_block参数
         # 根据指定参数把vgg_block拼在一起, 打包成"features"
-        # 32*32*3-> 16*16*64 -> 8*8*128 -> 4*4*256 -> 2*2*512 -> 1*1*512 -> classifier -> 1-10
+        # 32*32*3-> 16*16*64 -> 8*8*128 -> 4*4*256 -> 2*2*512 -> 1*1*512 -> classifier -> 1~10
         blocks = []
         in_ch = 3
         for num_convs, out_ch in conv_arch:
