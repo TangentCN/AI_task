@@ -1,5 +1,5 @@
 class Config:
-    model_name = 'AlexNet_CIFAR10'
+    model_name = 'VGG11_CIFAR10'
     '''
     model_names:
         'LeNet'
@@ -13,7 +13,7 @@ class Config:
 
     learning_rate = 0.01
     momentum = 0.9
-    weight_decay = 1e-4
+    weight_decay = 5e-4
     dropout_rate = 0.5
 
     factor = 0.5

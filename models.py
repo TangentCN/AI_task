@@ -131,6 +131,7 @@ class VGG11_CIFAR10(nn.Module):
         super().__init__()
         cfg = Config()
         self.name = 'VGG11_CIFAR10'
+        self.regu = True
         
         conv_arch = [(1, 64), (1, 128), (2, 256), (2, 512), (2, 512)] # 指定vgg_block参数
         # 根据指定参数把vgg_block拼在一起, 打包成"features"
