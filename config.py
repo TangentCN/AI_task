@@ -18,5 +18,5 @@ class Config:
     factor = 0.5
     patience = 5
     threshold = 1e-4
-    '''衰减器的耐心不要大于早停耐心！'''
-    early_stopping_patience = 10
+
+    early_stopping_patience = 10 # 衰减器的耐心不要大于早停耐心

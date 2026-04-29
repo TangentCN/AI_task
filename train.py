@@ -111,7 +111,11 @@ def save_training_log(net, losses, val_accuracies,learning_rates, best_epoch, be
     print(f"训练日志已保存至: {log_path}")
 
 def evaluate_model(net, dataloader, device):
-    '''在验证集上评估模型准确率'''
+    '''
+    在验证集上评估模型准确率
+    
+    该模块在升级到Dropout_LeNet时同步加入
+    '''
     net.eval()
     correct = 0
     total = 0
@@ -128,7 +132,13 @@ def evaluate_model(net, dataloader, device):
     return accuracy
 
 def train():
-    '''训练主程序'''
+    '''
+    训练主程序
+
+    LeNet 基本训练模块: 设备选择, 损失函数, SGD优化器, 损失记录, 绘图和日志记录
+    Dropout_LeNet 更新: SGD优化器加入权重衰减系数, 加入验证集并只保存验证最优的模型
+    AlexNet 更新: 加入学习率衰减控制器, 加入早停
+    '''
     cfg = Config()
     # 解决设备调用问题
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
