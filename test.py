@@ -1,7 +1,7 @@
 import torch
 from data import get_data_loaders, get_path
 from config import Config
-from models import LeNet, Dropout_LeNet, AlexNet_CIFAR10
+from models import LeNet, Dropout_LeNet, AlexNet_CIFAR10, VGG11_CIFAR10
 
 def predict(testloader, net, device='cpu'):
     '''在测试集上评估模型'''
@@ -103,6 +103,8 @@ def get_model(name):
             model = Dropout_LeNet()
         case 'AlexNet_CIFAR10':
             model = AlexNet_CIFAR10()
+        case 'VGG11_CIFAR10':
+            model = VGG11_CIFAR10()
 
     return model
 

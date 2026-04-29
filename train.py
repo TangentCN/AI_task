@@ -4,7 +4,7 @@ import winsound
 import torch.nn as nn
 import matplotlib.pyplot as plt
 import numpy as np
-from models import LeNet, Dropout_LeNet, AlexNet_CIFAR10
+from models import LeNet, Dropout_LeNet, AlexNet_CIFAR10, VGG11_CIFAR10
 from torch import optim
 from data import get_data_loaders, get_path
 from test import run_test
@@ -19,6 +19,8 @@ def get_model(name):
             model = Dropout_LeNet()
         case 'AlexNet_CIFAR10':
             model = AlexNet_CIFAR10()
+        case 'VGG11_CIFAR10':
+            model = VGG11_CIFAR10()
 
     return model
 

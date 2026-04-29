@@ -5,6 +5,7 @@ class Config:
         'LeNet'
         'Dropout_LeNet'
         'AlexNet_CIFAR10'
+        'VGG11_CIFAR10'
     '''
     batch_size = 128
     epochs = 100

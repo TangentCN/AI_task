@@ -114,3 +114,44 @@ class AlexNet_CIFAR10(nn.Module):
         x = self.dropout(x)
         x = self.fc3(x)
         return x
+    
+class VGG11_CIFAR10(nn.Module):
+    '''适配CIFAR-10的VGG11'''
+    @staticmethod # 把vgg_block定义成静态方法，包装起来不要露在外面
+    def _vgg_block(num_convs, in_channels, out_channels):
+        layers = []
+        for _ in range(num_convs): # 按指定要求堆卷积层(固定卷积核为3*3, padding为1), 自动匹配输入输出通道数
+            layers.append(nn.Conv2d(in_channels, out_channels, kernel_size=3, padding=1))
+            layers.append(nn.ReLU())
+            in_channels = out_channels
+        layers.append(nn.MaxPool2d(kernel_size=2, stride=2)) # 最后统一加池化
+        return nn.Sequential(*layers)
+    
+    def __init__(self):
+        super().__init__()
+        cfg = Config()
+        self.name = 'VGG11_CIFAR10'
+        
+        conv_arch = [(1, 64), (1, 128), (2, 256), (2, 512), (2, 512)] # 指定vgg_block参数
+        # 根据指定参数把vgg_block拼在一起, 打包成"features"
+        # 32*32*3-> 16*16*64 -> 8*8*128 -> 4*4*256 -> 2*2*512 -> 1*1*512 -> classifier -> 1-10
+        blocks = []
+        in_ch = 3
+        for num_convs, out_ch in conv_arch:
+            blocks.append(self._vgg_block(num_convs, in_ch, out_ch))
+            in_ch = out_ch
+        self.features = nn.Sequential(*blocks)
+        # 全连接和dropout层放在一起, 打包成"classifier"
+        self.classifier = nn.Sequential(
+            nn.Flatten(),
+            nn.Dropout(cfg.dropout_rate),
+            nn.Linear(512, 512),
+            nn.ReLU(),
+            nn.Dropout(cfg.dropout_rate),
+            nn.Linear(512, 10)
+        )
+    
+    def forward(self, x):
+        x = self.features(x)
+        x = self.classifier(x)
+        return x
