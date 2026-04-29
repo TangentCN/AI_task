@@ -3,6 +3,7 @@ import datetime
 import winsound
 import torch.nn as nn
 import matplotlib.pyplot as plt
+import numpy as np
 from models import LeNet, Dropout_LeNet, AlexNet_CIFAR10
 from torch import optim
 from data import get_data_loaders, get_path
@@ -160,6 +161,7 @@ def train():
     losses = []
     val_accuracies = []
     learning_rates = []
+    ln_learning_rates = []
     best_accuracy = 0.0
     best_epoch = -1
     counter = 0 # 早停监测器
@@ -194,7 +196,9 @@ def train():
         accuracy = evaluate_model(net, valloader, device)
         val_accuracies.append(accuracy)
         current_lr = optimizer.param_groups[0]['lr']
+        ln_current_lr = np.log(current_lr)
         learning_rates.append(current_lr)
+        ln_learning_rates.append(ln_current_lr)
         print('epoch %d: loss: %.3f lr: %.5f val_accuracy: %.3f%%' % 
               (epoch+1, avrg_loss, current_lr, accuracy * 100))
         
@@ -220,7 +224,7 @@ def train():
     save_training_log(net, losses, val_accuracies, learning_rates, best_epoch, best_accuracy)
     draw(losses, 'loss')
     draw(val_accuracies, 'accuracies')
-    draw(learning_rates, 'learning_rate')
+    draw(ln_learning_rates, 'lr(ln)')
     run_test() #顺便运行测试
 
 if __name__ == '__main__':
