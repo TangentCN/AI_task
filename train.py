@@ -58,7 +58,7 @@ def save_training_log(net, losses, val_accuracies,learning_rates, best_epoch, be
         f.write(f"{'=' * 30}\n")
         f.write(f"模型 : {net.name}\n")
         f.write(f"批次大小 (batch_size): {cfg.batch_size}\n")
-        f.write(f"早停耐心 (early_stopping_patience): {cfg.early_stopping_patience}\n")
+        f.write(f"早停耐心 (early_stopping_patience): {cfg.es_patience}\n")
         f.write(f"训练轮数 (epochs): {len(losses)}")
         if len(losses) < cfg.epochs:
             f.write("(早停启用)\n")
@@ -113,11 +113,7 @@ def save_training_log(net, losses, val_accuracies,learning_rates, best_epoch, be
     print(f"训练日志已保存至: {log_path}")
 
 def evaluate_model(net, dataloader, device):
-    '''
-    在验证集上评估模型准确率
-
-    该模块在升级到Dropout_LeNet时同步加入
-    '''
+    '''在验证集上评估模型准确率'''
     net.eval()
     correct = 0
     total = 0
@@ -138,7 +134,7 @@ def train():
     训练主程序
 
     LeNet 基本训练模块: 训练主循环, 设备选择, 损失函数, SGD优化器, 损失记录, 绘图和日志记录
-    Dropout_LeNet 更新: SGD优化器加入权重衰减系数, 加入验证集并只保存验证最优的模型
+    Dropout_LeNet 更新: SGD优化器加入权重衰减系数
     AlexNet 更新: 加入学习率控制器, 加入早停
     '''
     cfg = Config()
@@ -149,6 +145,7 @@ def train():
     else:
         print('device: on cpu')
     net = get_model(cfg.model_name).to(device)  # 有GPU就用GPU
+    print(f'Model: {cfg.model_name}')
 
     # 初始化各项变量
     save_path = get_path()
@@ -162,6 +159,7 @@ def train():
         weight_decay=cfg.weight_decay
         )
         # 学习率动态衰减：监控准确度 (mode='max')
+    
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
         optimizer,
         mode='max',              # 监控准确度，越大越好
@@ -169,6 +167,7 @@ def train():
         patience=cfg.patience,   # n个epoch无改善后衰减
         threshold=cfg.threshold, # 判定是否改善的阈值
     )
+    
     trainloader, valloader, _ = get_data_loaders()
     losses = []
     val_accuracies = []
@@ -222,13 +221,16 @@ def train():
             torch.save(net.state_dict(), f"{save_path}/best_model.pth")
             print(f"   -> 新的最佳模型，测试准确率: {accuracy:.3%}")
         # 早停监测
+        
         else:
             counter += 1
             print(f"No improvement for {counter} epochs")
-            if counter >= cfg.early_stopping_patience:
+            if counter >= cfg.es_patience:
                 print("Early stopping triggered!")
                 break
+        
         # 每个epoch结束后更新学习率调度器，传入当前准确度
+
         scheduler.step(accuracy)
     # 结束处理  
     print('Finished Training')
